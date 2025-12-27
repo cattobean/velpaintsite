@@ -8,7 +8,7 @@ export default function Canvas() {
   const [drawing, setDrawing] = useState(false);
 
   useEffect(() => {
-    socket = io(`drawingbackend--dannywoolaway.replit.app`);
+    socket = io(`https://drawingbackend--dannywoolaway.replit.app/`);
 
     socket.on("draw", drawStroke);
     socket.on("loadDrawings", (allDrawings) => {
