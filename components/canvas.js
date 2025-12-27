@@ -7,10 +7,11 @@ export default function Canvas() {
   const canvasRef = useRef(null);
   const terminalRef = useRef(null);
 
+  // Drawing & canvas states
   const [drawing, setDrawing] = useState(false);
   const [brush, setBrush] = useState("round");
   const [size, setSize] = useState(5);
-  const [color, setColor] = useState("#ffffff");
+  const [color, setColor] = useState("#000000"); // default black
   const [opacity, setOpacity] = useState(1);
   const [rainbowUnlocked, setRainbowUnlocked] = useState(false);
   const [secret1Unlocked, setSecret1Unlocked] = useState(false);
@@ -34,7 +35,6 @@ export default function Canvas() {
     const interval = setInterval(() => {
       if (rainbowUnlocked) setHue((h) => (h + 1) % 360);
     }, 30);
-
     return () => clearInterval(interval);
   }, [offset, rainbowUnlocked]);
 
@@ -121,7 +121,6 @@ export default function Canvas() {
     panRef.current = false;
   };
 
-  // Check if canvas expansion is needed
   const checkExpandCanvas = (newOffset) => {
     const ctx = canvasRef.current.getContext("2d");
     let expanded = false;
@@ -143,6 +142,8 @@ export default function Canvas() {
       tempCanvas.width = width;
       tempCanvas.height = height;
       const tempCtx = tempCanvas.getContext("2d");
+      tempCtx.fillStyle = "#ffffff"; // fill white
+      tempCtx.fillRect(0, 0, width, height);
       tempCtx.drawImage(canvasRef.current, 0, 0);
       canvasRef.current.width = width;
       canvasRef.current.height = height;
@@ -151,7 +152,6 @@ export default function Canvas() {
     }
   };
 
-  // Terminal command handler (same as before)
   const handleCommand = (e) => {
     if (e.key !== "Enter") return;
     const input = e.target.value.trim().split(" ");
@@ -163,7 +163,7 @@ export default function Canvas() {
       if (arg === "rainbow" && !rainbowUnlocked) appendTerminal("Rainbow locked!");
       else if (arg === "secret1" && !secret1Unlocked) appendTerminal("Secret1 locked!");
       else if (arg === "secret2" && !secret2Unlocked) appendTerminal("Secret2 locked!");
-      else setColor(arg || "#ffffff");
+      else setColor(arg || "#000000"); // default black
     }
     if (cmd === "opacity") setOpacity(Math.min(Math.max(parseFloat(arg), 0), 1) || 1);
     if (cmd === "unlock") {
@@ -179,7 +179,6 @@ export default function Canvas() {
     terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
   };
 
-  // Server heartbeat
   useEffect(() => {
     const interval = setInterval(() => {
       const status = socket.connected ? "Server responding ✅" : "Server not responding ❌";
@@ -193,23 +192,23 @@ export default function Canvas() {
   }, []);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", backgroundColor: "#222", height: "100vh" }}>
+    <div style={{ display: "flex", flexDirection: "column", backgroundColor: "#ffffff", height: "100vh" }}>
       <canvas
         ref={canvasRef}
         width={canvasSize.width}
         height={canvasSize.height}
-        style={{ backgroundColor: "#333", flex: 1 }}
+        style={{ backgroundColor: "#ffffff", flex: 1 }}
         onMouseDown={startDrawing}
         onMouseMove={draw}
         onMouseUp={stopDrawing}
         onMouseLeave={stopDrawing}
       />
-      <div style={{ backgroundColor: "#000000", color: "#00f", fontFamily: "monospace", padding: "10px", height: "150px", overflowY: "auto" }}>
+      <div style={{ backgroundColor: "#222", color: "#00f", fontFamily: "monospace", padding: "10px", height: "150px", overflowY: "auto" }}>
         <div ref={terminalRef}>Server responding ❌  Commands: brush, color, opacity, unlock</div>
         <input
           type="text"
           onKeyDown={handleCommand}
-          style={{ width: "100%", background: "#000000", color: "#00f", border: "none", outline: "none", fontFamily: "monospace" }}
+          style={{ width: "100%", background: "#222", color: "#00f", border: "none", outline: "none", fontFamily: "monospace" }}
           placeholder="Enter command..."
         />
       </div>
