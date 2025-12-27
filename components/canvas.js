@@ -24,7 +24,7 @@ export default function Canvas() {
   const panRef = useRef(false);
 
   useEffect(() => {
-    socket = io("https://YOUR_REPL_URL.repl.co");
+    socket = io("https://drawingbackend--dannywoolaway.replit.app");
 
     socket.on("connect", () => setServerAlive(true));
     socket.on("disconnect", () => setServerAlive(false));
