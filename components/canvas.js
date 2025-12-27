@@ -1,4 +1,4 @@
-// components/Canvas.js
+// components/Canvas.js hi this is a dev note saying im tired you wont see this again.
 import { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 
