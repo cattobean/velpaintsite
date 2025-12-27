@@ -1,5 +1,5 @@
 // pages/index.js
-import Canvas from "../components/Canvas";
+import Canvas from "../components/Canvas.js";
 
 export default function Home() {
   return (
