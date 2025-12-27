@@ -193,6 +193,15 @@ export default function Canvas() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", backgroundColor: "#ffffff", height: "100vh" }}>
+      <div style={{ backgroundColor: "#222", color: "#00f", fontFamily: "monospace", padding: "10px", height: "150px", overflowY: "auto" }}>
+        <div ref={terminalRef}>Server responding ❌  Commands: brush, color, opacity, unlock</div>
+        <input
+          type="text"
+          onKeyDown={handleCommand}
+          style={{ width: "100%", background: "#222", color: "#00f", border: "none", outline: "none", fontFamily: "monospace" }}
+          placeholder="Enter command..."
+        />
+      </div>
       <canvas
         ref={canvasRef}
         width={canvasSize.width}
@@ -203,15 +212,6 @@ export default function Canvas() {
         onMouseUp={stopDrawing}
         onMouseLeave={stopDrawing}
       />
-      <div style={{ backgroundColor: "#222", color: "#00f", fontFamily: "monospace", padding: "10px", height: "150px", overflowY: "auto" }}>
-        <div ref={terminalRef}>Server responding ❌  Commands: brush, color, opacity, unlock</div>
-        <input
-          type="text"
-          onKeyDown={handleCommand}
-          style={{ width: "100%", background: "#222", color: "#00f", border: "none", outline: "none", fontFamily: "monospace" }}
-          placeholder="Enter command..."
-        />
-      </div>
     </div>
   );
 }
