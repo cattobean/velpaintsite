@@ -192,7 +192,7 @@ export default function Canvas() {
   }, []);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", backgroundColor: "#ffffff", height: "100vh" }}>
+    <div style={{ display: "flex", flexDirection: "column", backgroundColor: "#ffffff", height: "300vh" }}>
       <div style={{ backgroundColor: "#222", color: "#00f", fontFamily: "monospace", padding: "10px", height: "350px", overflowY: "auto" }}>
         <div ref={terminalRef}>Server responding ❌  Commands: brush, color, opacity, unlock</div>
         <input
