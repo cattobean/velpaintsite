@@ -1,6 +1,5 @@
-// components/Canvas.js hi this is a dev note saying im tired you wont see this again.
 import { useEffect, useRef, useState } from "react";
-import io from "socket.io-client";
+import { io } from "socket.io-client";
 
 let socket;
 
@@ -9,10 +8,14 @@ export default function Canvas() {
   const [drawing, setDrawing] = useState(false);
 
   useEffect(() => {
-    // Connect to socket
-    socket = io();
+    socket = io(`drawingbackend--dannywoolaway.replit.app`);
 
-    socket.on("draw", ({ x0, y0, x1, y1, color, size }) => {
+    socket.on("draw", drawStroke);
+    socket.on("loadDrawings", (allDrawings) => {
+      allDrawings.forEach(drawStroke);
+    });
+
+    function drawStroke({ x0, y0, x1, y1, color, size }) {
       const ctx = canvasRef.current.getContext("2d");
       ctx.strokeStyle = color;
       ctx.lineWidth = size;
@@ -21,7 +24,7 @@ export default function Canvas() {
       ctx.lineTo(x1, y1);
       ctx.stroke();
       ctx.closePath();
-    });
+    }
   }, []);
 
   const startDrawing = (e) => {
@@ -34,10 +37,10 @@ export default function Canvas() {
   const draw = (e) => {
     if (!drawing) return;
     const rect = canvasRef.current.getBoundingClientRect();
-    const ctx = canvasRef.current.getContext("2d");
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
+    const ctx = canvasRef.current.getContext("2d");
     ctx.strokeStyle = "black";
     ctx.lineWidth = 2;
     ctx.beginPath();
@@ -46,7 +49,6 @@ export default function Canvas() {
     ctx.stroke();
     ctx.closePath();
 
-    // Send draw data to server
     socket.emit("draw", {
       x0: canvasRef.current.lastX,
       y0: canvasRef.current.lastY,
